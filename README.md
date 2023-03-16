@@ -4,3 +4,6 @@ This repository contains a pluto notebook for students and/or instructors comple
 
 Eadie, G., Huppenkothen, D., Springford, A., and T. McCormick (2019), "Introducing Bayesian Analysis With m&m’s®: An Active-learning Exercise for Undergraduates, Journal of Statistics Education, pp. 60-67. https://doi.org/10.1080/10691898.2019.1604106
 
+Full data available from:
+https://github.com/gweneadie/BayesianMandMs
+
