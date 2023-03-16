@@ -24,6 +24,18 @@ begin
 	PlutoUI.TableOfContents(title = "Contents")
 end
 
+# ╔═╡ 3a40d036-6565-499a-9d35-b5d176773bcc
+html"""
+<style>
+  pluto-helpbox {
+    display: none;
+  }
+</style>
+"""
+
+# ╔═╡ 9ef33e78-7b11-46e2-8500-57fc89e591e1
+html"<button onclick=present()> present</button>"
+
 # ╔═╡ 068c302e-c364-11ed-0542-af0d94a7d1bf
 md"""
 # Bayesian exercise with m&m's
@@ -226,6 +238,52 @@ begin
 	ylims!(0,10)
 end
 
+# ╔═╡ ae293a8d-6152-4b01-b3e7-5cc8e0ac4b7b
+md"""
+## 5. Plot the posterior distribution for different colours.
+
+As an extra step let's plot for a different colour to see their posterior.
+"""
+
+# ╔═╡ c8c3bee7-58d7-434e-80c8-8f4aeebc313d
+colours = Dict("orange" => norange, "green" =>ngreen , "yellow" => nyellow, 
+	"red"=> nred, "brown" => nbrown, "blue" => nblue);
+
+# ╔═╡ d34302aa-e9f8-4cc3-af4f-209510899a65
+all_colours = ["blue", "orange", "green", "yellow",	"red", "brown"];
+
+# ╔═╡ 763837cf-9735-4ae5-b6f6-5f2bbbb3cb82
+begin
+	altermean = Dict();
+	altervar = Dict();
+	for i in all_colours
+		altermean[i] = mean(Beta(colours[i] + mya, ntotal - colours[i] + myb)) ;
+		altervar[i] = var(Beta(colours[i] + mya, ntotal - colours[i] + myb)) ;
+	end
+end
+
+# ╔═╡ 314ebd13-e0c8-4483-b22f-047a0dba1c19
+@bind colour_sel Radio(["orange",  "green","yellow","red", "brown"], default="orange")
+
+# ╔═╡ 62f55225-5d37-4034-b34b-5c4a58a16052
+begin
+	plot(Beta(mya, myb), xlim=(0,1), xlabel = L"\theta", ylabel=L"p(\theta)", linewidth = 1, linecolor=:grey, linestyle=:dash, label= L"prior, $\alpha = %$mya, \beta = %$myb$", legendfontsize=11)
+	plot!(Beta(colours[colour_sel] + mya, ntotal - colours[colour_sel] + myb),xlabel = L"\theta", ylabel=L"p(\theta)", linewidth = 2, linecolor=:black, linestyle=:solid, label= "posterior")
+	vline!([altermean[colour_sel]], linecolor=:red, ls=:dashdot, label="posterior mean")
+	title!("Posterior distribution for the probability of drawing a $(colour_sel) m&m", titlefontsize=11)
+	xlims!(0,1)
+	ylims!(0,15)
+end
+
+# ╔═╡ 357b4b55-3fc5-4a70-9843-c2ab1307e56b
+md"""
+#### How do the posterior means look like?
+"""
+
+# ╔═╡ 24d64111-d206-46db-a8e0-574357486c9d
+bar([altermean[i] for i in all_colours],yticks=(1:length(all_colours), all_colours), orientation=:h, yflip=true, legend=:none, xlabel = L"\mathbb{E}_p[\theta]",
+title="Posterior mean for each M&M colour" )
+
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
@@ -249,7 +307,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.8.2"
 manifest_format = "2.0"
-project_hash = "15125f7ad2101bbf15b45154305d1f391eb0c140"
+project_hash = "5f5b602478c86cc685eb476a3a6f36591f61efd1"
 
 [[deps.AbstractFFTs]]
 deps = ["ChainRulesCore", "LinearAlgebra"]
@@ -1468,6 +1526,8 @@ version = "1.4.1+0"
 """
 
 # ╔═╡ Cell order:
+# ╟─3a40d036-6565-499a-9d35-b5d176773bcc
+# ╟─9ef33e78-7b11-46e2-8500-57fc89e591e1
 # ╟─068c302e-c364-11ed-0542-af0d94a7d1bf
 # ╟─ac0b423c-4037-4002-9377-d1afe864f17f
 # ╟─89ae5cdb-d360-465a-84a5-ffd3427524b2
@@ -1493,6 +1553,14 @@ version = "1.4.1+0"
 # ╟─146c6ccd-a01c-4d68-aab4-506ee8f703c0
 # ╟─6a34eb68-f77f-46b1-9632-c93572a8a08b
 # ╟─831f10b1-2712-4ca9-92d7-76d430657a42
+# ╟─ae293a8d-6152-4b01-b3e7-5cc8e0ac4b7b
+# ╟─c8c3bee7-58d7-434e-80c8-8f4aeebc313d
+# ╟─d34302aa-e9f8-4cc3-af4f-209510899a65
+# ╟─763837cf-9735-4ae5-b6f6-5f2bbbb3cb82
+# ╟─314ebd13-e0c8-4483-b22f-047a0dba1c19
+# ╟─62f55225-5d37-4034-b34b-5c4a58a16052
+# ╟─357b4b55-3fc5-4a70-9843-c2ab1307e56b
+# ╟─24d64111-d206-46db-a8e0-574357486c9d
 # ╟─8e03213b-7fa1-4254-8a20-09135ce8caea
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
