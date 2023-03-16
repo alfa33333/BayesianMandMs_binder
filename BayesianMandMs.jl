@@ -176,14 +176,14 @@ ntotal = $(@bind ntotal NumberField(0:100; default=21) )
 
 Number for each colour:
 
-nblue = $(@bind nblue NumberField(0:100; default=6) ),
- norange = $(@bind norange NumberField(0:100; default=7) )
+🔵 = $(@bind nblue NumberField(0:100; default=6) ),
+ 🟠 = $(@bind norange NumberField(0:100; default=7) )
 
-ngreen = $(@bind ngreen NumberField(0:100; default=3) ),
- nyellow = $(@bind nyellow NumberField(0:100; default=4) )
+🟢 = $(@bind ngreen NumberField(0:100; default=3) ),
+ 🟡 = $(@bind nyellow NumberField(0:100; default=4) )
 
-nred = $(@bind nred NumberField(0:100; default=0) ),
- nbrown = $(@bind nbrown NumberField(0:100; default=1) )
+🔴 = $(@bind nred NumberField(0:100; default=0) ),
+ 🟤 = $(@bind nbrown NumberField(0:100; default=1) )
 """
 
 # ╔═╡ afd34009-36f3-4bc1-81a0-69490503c3b0
@@ -245,6 +245,13 @@ md"""
 As an extra step let's plot for a different colour to see their posterior.
 """
 
+# ╔═╡ 4cdb09de-05d7-4816-b5c7-42001792e38f
+md"m&m colour:"
+
+# ╔═╡ 314ebd13-e0c8-4483-b22f-047a0dba1c19
+@bind colour_sel Radio(["orange" => "🟠", "green" => "🟢", "yellow" => "🟡",
+	"red" => "🔴", "brown" => "🟤"], default= "orange")
+
 # ╔═╡ c8c3bee7-58d7-434e-80c8-8f4aeebc313d
 colours = Dict("orange" => norange, "green" =>ngreen , "yellow" => nyellow, 
 	"red"=> nred, "brown" => nbrown, "blue" => nblue);
@@ -262,15 +269,12 @@ begin
 	end
 end
 
-# ╔═╡ 314ebd13-e0c8-4483-b22f-047a0dba1c19
-@bind colour_sel Radio(["orange",  "green","yellow","red", "brown"], default="orange")
-
 # ╔═╡ 62f55225-5d37-4034-b34b-5c4a58a16052
 begin
 	plot(Beta(mya, myb), xlim=(0,1), xlabel = L"\theta", ylabel=L"p(\theta)", linewidth = 1, linecolor=:grey, linestyle=:dash, label= L"prior, $\alpha = %$mya, \beta = %$myb$", legendfontsize=11)
 	plot!(Beta(colours[colour_sel] + mya, ntotal - colours[colour_sel] + myb),xlabel = L"\theta", ylabel=L"p(\theta)", linewidth = 2, linecolor=:black, linestyle=:solid, label= "posterior")
 	vline!([altermean[colour_sel]], linecolor=:red, ls=:dashdot, label="posterior mean")
-	title!("Posterior distribution for the probability of drawing a $(colour_sel) m&m", titlefontsize=11)
+	title!("Posterior distribution for the probability of drawing: $(colour_sel) m&m", titlefontsize=11)
 	xlims!(0,1)
 	ylims!(0,15)
 end
@@ -1554,11 +1558,12 @@ version = "1.4.1+0"
 # ╟─6a34eb68-f77f-46b1-9632-c93572a8a08b
 # ╟─831f10b1-2712-4ca9-92d7-76d430657a42
 # ╟─ae293a8d-6152-4b01-b3e7-5cc8e0ac4b7b
+# ╟─4cdb09de-05d7-4816-b5c7-42001792e38f
+# ╟─314ebd13-e0c8-4483-b22f-047a0dba1c19
+# ╟─62f55225-5d37-4034-b34b-5c4a58a16052
 # ╟─c8c3bee7-58d7-434e-80c8-8f4aeebc313d
 # ╟─d34302aa-e9f8-4cc3-af4f-209510899a65
 # ╟─763837cf-9735-4ae5-b6f6-5f2bbbb3cb82
-# ╟─314ebd13-e0c8-4483-b22f-047a0dba1c19
-# ╟─62f55225-5d37-4034-b34b-5c4a58a16052
 # ╟─357b4b55-3fc5-4a70-9843-c2ab1307e56b
 # ╟─24d64111-d206-46db-a8e0-574357486c9d
 # ╟─8e03213b-7fa1-4254-8a20-09135ce8caea
